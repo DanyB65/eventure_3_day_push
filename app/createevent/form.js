@@ -6,13 +6,14 @@ import { CreateEvent } from "./action";
 import { redirect } from "next/dist/server/api-utils";
 
 export default function EventForm() {
-    const [endColor, setEndColor] = useState("#feb47b");
     const { data: session, status } = useSession(); // Get session data
   // Declare all hooks at the top of the component
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventPrice, setEventPrice] = useState("");
   const [startColor, setStartColor] = useState("#ff7e5f");
+  const [endColor, setEndColor] = useState("#feb47b");
+
   const email = session?.user.email;
   const handleSubmit = async (e) => {
     e.preventDefault();
