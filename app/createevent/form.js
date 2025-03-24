@@ -1,37 +1,36 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { CreateEvent } from './action';
-import { redirect } from 'next/dist/server/api-utils';
+// import { useRouter } from "next/router";
+import { CreateEvent } from "./action";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function EventForm() {
-    // Declare all hooks at the top of the component
-    const [eventName, setEventName] = useState("");
-    const [eventDescription, setEventDescription] = useState("");
-    const [eventPrice, setEventPrice] = useState("");
-    const [startColor, setStartColor] = useState("#ff7e5f");
-    const [endColor, setEndColor] = useState("#feb47b");
+  // Declare all hooks at the top of the component
+  const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [eventPrice, setEventPrice] = useState("");
+  const [startColor, setStartColor] = useState("#ff7e5f");
+  const [endColor, setEndColor] = useState("#feb47b");
   const { data: session, status } = useSession(); // Get session data
-  const router = useRouter();
+//   const router = useRouter();
 
+//   // If the session is still loading, you can show a loading state
+//   if (status === "loading") {
+//     return <p>Loading...</p>;
+//   }
 
-  // If the session is still loading, you can show a loading state
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
+//   // If there's no session (user is not logged in), redirect to login page
+//   if (!session) {
+//     // router.push("/login");
+//     redirect("/login");
+//     return null;
+//   }
 
-  // If there's no session (user is not logged in), redirect to login page
-  if (!session) {
-    // router.push("/login");
-    redirect("/login");
-    return null;
-  }
-
-//   const handleSignOut = async () => {
-//     await signOut();
-//     window.location.reload(); // Reload to update session
-//   };
+  //   const handleSignOut = async () => {
+  //     await signOut();
+  //     window.location.reload(); // Reload to update session
+  //   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -79,7 +78,14 @@ export default function EventForm() {
   }
 
   return (
-    <div style={{ display: "flex", gap: "40px", justifyContent: "center", alignItems: "flex-start" }}>
+    <div
+      style={{
+        display: "flex",
+        gap: "40px",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}
+    >
       {/* Form Section */}
       <div style={{ flex: 1, maxWidth: "500px" }}>
         <h2>Create an Event</h2>
@@ -105,7 +111,9 @@ export default function EventForm() {
               required
               placeholder="Enter event description"
               style={{ width: "100%", padding: "10px", marginBottom: "15px" }}
-              onKeyPress={(e) => limitKeypressOnDescription(e, eventDescription)}
+              onKeyPress={(e) =>
+                limitKeypressOnDescription(e, eventDescription)
+              }
             />
           </div>
 
@@ -123,7 +131,16 @@ export default function EventForm() {
           </div>
 
           <div>
-            <button type="submit" style={{ padding: "10px 20px", backgroundColor: "#EB3B43", color: "white", border: "none", borderRadius: "5px" }}>
+            <button
+              type="submit"
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#EB3B43",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
               Create Event
             </button>
           </div>
@@ -151,8 +168,17 @@ export default function EventForm() {
       </div>
 
       {/* Preview Section */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <h3 style={{ color: "white", margin: "0", textAlign: "center" }}>Event Preview</h3>
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h3 style={{ color: "white", margin: "0", textAlign: "center" }}>
+          Event Preview
+        </h3>
         <div
           style={{
             backgroundColor: "black",
@@ -168,13 +194,29 @@ export default function EventForm() {
             background: `linear-gradient(135deg, ${startColor}, ${endColor})`,
           }}
         >
-          <h4 style={{ color: "black", fontSize: "1.5rem", margin: "0", marginTop: "10px", wordWrap: "break-word" }}>
+          <h4
+            style={{
+              color: "black",
+              fontSize: "1.5rem",
+              margin: "0",
+              marginTop: "10px",
+              wordWrap: "break-word",
+            }}
+          >
             {eventName || "Event Name"}
           </h4>
           <p style={{ color: "black", fontSize: "1rem", marginTop: "10px" }}>
             {eventDescription || "Description of the event..."}
           </p>
-          <p style={{ fontWeight: "bold", color: "#EB3B43", fontSize: "1.5rem", margin: "0", wordWrap: "break-word" }}>
+          <p
+            style={{
+              fontWeight: "bold",
+              color: "#EB3B43",
+              fontSize: "1.5rem",
+              margin: "0",
+              wordWrap: "break-word",
+            }}
+          >
             ${eventPrice || "0"}
           </p>
         </div>

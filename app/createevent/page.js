@@ -9,23 +9,23 @@ import styles from "../page.module.css";
 import { signOut } from "../action";
 import EventForm from "./form";
 export default function CreateEvent() {
-  const { data: session, status } = useSession(); // Get session data
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const handleSignOut = async () => {
-    await signOut();
-    window.location.reload(); // Reload to update session
-  };
 
-  // If the session is still loading, you can show a loading state
+  // If the session is still loading, show a loading indicator
   if (status === "loading") {
     return <p>Loading...</p>;
   }
 
-  // If there's no session (user is not logged in), redirect to login page
+  // Now check if the session is null and redirect if needed
   if (!session) {
-    redirect("/login");
-    return null; // You can return null to prevent rendering the rest of the page
+    router.push("/login");
+    return null;
   }
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.reload(); // Reload to update session
+  };
   return (
     <div>
       <header className={styles.header}>

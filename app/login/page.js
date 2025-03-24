@@ -3,28 +3,34 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter,useSearchParams } from 'next/navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // Get the callbackUrl from the query params, default to '/'
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Call NextAuth.js to handle the login
+    // Call NextAuth.js to handle the login, passing in the callbackUrl
     const result = await signIn('credentials', {
       email,
       password,
       redirect: false,
+      callbackUrl,
     });
 
     if (result?.error) {
       setError('Invalid email or password');
     } else {
-      router.push('/'); // Redirect to home page on successful login
+        console.log('result',result)
+      // Redirect to the dynamic callbackUrl (or fallback to '/')
+      router.push(result.url || callbackUrl);
     }
   };
 
