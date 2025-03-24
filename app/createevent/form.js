@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 // import { useRouter } from "next/router";
 import { CreateEvent } from "./action";
-import { redirect } from "next/dist/server/api-utils";
 
 export default function EventForm() {
     const { data: session, status } = useSession(); // Get session data
