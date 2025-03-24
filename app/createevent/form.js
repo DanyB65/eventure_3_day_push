@@ -1,20 +1,19 @@
 'use client';
-
-import { useState } from "react";
+import { useState } from 'react';
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import {CreateEvent} from './action'
-
-
+import { CreateEvent } from './action';
 
 export default function EventForm() {
-const { data: session, status } = useSession(); // Get session data
-//   console.log("session", session.user.email);
-//   const router = useRouter();
-  const handleSignOut = async () => {
-    await signOut();
-    window.location.reload(); // Reload to update session
-  };
+  const { data: session, status } = useSession(); // Get session data
+  const router = useRouter();
+
+  // Declare all hooks at the top of the component
+  const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [eventPrice, setEventPrice] = useState("");
+  const [startColor, setStartColor] = useState("#ff7e5f");
+  const [endColor, setEndColor] = useState("#feb47b");
 
   // If the session is still loading, you can show a loading state
   if (status === "loading") {
@@ -23,22 +22,19 @@ const { data: session, status } = useSession(); // Get session data
 
   // If there's no session (user is not logged in), redirect to login page
   if (!session) {
-    redirect("/login");
-    return null; // You can return null to prevent rendering the rest of the page
+    router.push("/login");
+    return null;
   }
 
-
-  const [eventName, setEventName] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const [eventPrice, setEventPrice] = useState("");
-  const [startColor, setStartColor] = useState("#ff7e5f");  // Default gradient start color
-  const [endColor, setEndColor] = useState("#feb47b");  // Default gradient end color
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.reload(); // Reload to update session
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Construct the event data object
     const eventData = {
       eventName,
       eventDescription,
@@ -47,8 +43,8 @@ const { data: session, status } = useSession(); // Get session data
       endColor,
       email: session.user.email,
     };
+
     CreateEvent(eventData);
-    // Here, you would send the data to your backend API
     console.log("Sending the following event data to the backend:", eventData);
 
     // Reset form after submission
@@ -59,29 +55,26 @@ const { data: session, status } = useSession(); // Get session data
     setEndColor("#feb47b");
   };
 
+  // Helper functions for keypress limits
   function limitKeypressOnTitle(event, value) {
-    if (value != undefined && value.toString().length >= 30) {
-        event.preventDefault();
+    if (value && value.toString().length >= 30) {
+      event.preventDefault();
     }
-}
-function limitKeypressOnDescription(event, value) {
-    if (value != undefined && value.toString().length >= 120) {
-        event.preventDefault();
+  }
+  function limitKeypressOnDescription(event, value) {
+    if (value && value.toString().length >= 120) {
+      event.preventDefault();
     }
-}
-function limitKeypressOnPrice(event, value) {
-    // Allow only numbers and prevent other characters
+  }
+  function limitKeypressOnPrice(event, value) {
     const regex = /^[0-9]$/;
     if (!regex.test(event.key) && event.key !== "Backspace") {
-        event.preventDefault();
+      event.preventDefault();
     }
-  
-    // Limit the length to 4 characters
     if (value.length >= 4) {
-        event.preventDefault();
+      event.preventDefault();
     }
-}
-
+  }
 
   return (
     <div style={{ display: "flex", gap: "40px", justifyContent: "center", alignItems: "flex-start" }}>
@@ -110,7 +103,7 @@ function limitKeypressOnPrice(event, value) {
               required
               placeholder="Enter event description"
               style={{ width: "100%", padding: "10px", marginBottom: "15px" }}
-                onKeyPress={(e) => limitKeypressOnDescription(e, eventDescription)}
+              onKeyPress={(e) => limitKeypressOnDescription(e, eventDescription)}
             />
           </div>
 
@@ -128,7 +121,9 @@ function limitKeypressOnPrice(event, value) {
           </div>
 
           <div>
-            <button type="submit" style={{ padding: "10px 20px", backgroundColor: "#EB3B43", color: "white", border: "none", borderRadius: "5px" }}>Create Event</button>
+            <button type="submit" style={{ padding: "10px 20px", backgroundColor: "#EB3B43", color: "white", border: "none", borderRadius: "5px" }}>
+              Create Event
+            </button>
           </div>
         </form>
 
@@ -155,33 +150,31 @@ function limitKeypressOnPrice(event, value) {
 
       {/* Preview Section */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        {/* Event Preview Title */}
         <h3 style={{ color: "white", margin: "0", textAlign: "center" }}>Event Preview</h3>
-
-        {/* Event Preview Card */}
         <div
           style={{
-            backgroundColor: "black",  // Set the overall card background to black
+            backgroundColor: "black",
             border: "1px solid #ddd",
             padding: "20px",
-            width: "200px",  // Adjusted width to be smaller
-            height: "280px",  // Adjusted height to fit without a picture
+            width: "200px",
+            height: "280px",
             display: "flex",
             flexDirection: "column",
             borderRadius: "15px",
             alignItems: "left",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",  // Add shadow for depth
-            background: `linear-gradient(135deg, ${startColor}, ${endColor})`, // Dynamic gradient background
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            background: `linear-gradient(135deg, ${startColor}, ${endColor})`,
           }}
         >
-          {/* Event Name */}
-          <h4 style={{ color: "black", fontSize: "1.5rem", margin: "0", marginTop: "10px", wordWrap: "break-word"}}>{eventName || "Event Name"}</h4> {/* Make the event name text larger */}
-
-          {/* Event Description */}
-          <p style={{ color: "black", fontSize: "1rem", marginTop: "10px" }}>{eventDescription || "Description of the event..."}</p> {/* Make the description text black */}
-
-          {/* Event Price */}
-          <p style={{ fontWeight: "bold", color: "#EB3B43", fontSize: "1.5rem", margin: "0",wordWrap: "break-word" }}>${eventPrice || "0"}</p> {/* Apply the price color */}
+          <h4 style={{ color: "black", fontSize: "1.5rem", margin: "0", marginTop: "10px", wordWrap: "break-word" }}>
+            {eventName || "Event Name"}
+          </h4>
+          <p style={{ color: "black", fontSize: "1rem", marginTop: "10px" }}>
+            {eventDescription || "Description of the event..."}
+          </p>
+          <p style={{ fontWeight: "bold", color: "#EB3B43", fontSize: "1.5rem", margin: "0", wordWrap: "break-word" }}>
+            ${eventPrice || "0"}
+          </p>
         </div>
       </div>
     </div>
