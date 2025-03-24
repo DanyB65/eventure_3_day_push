@@ -1,9 +1,17 @@
-// app/actions.ts
-"use server";
-import { neon } from "@neondatabase/serverless";
 
-export async function getData() {
-    const sql = neon(process.env.DATABASE_URL);
-    const data = await sql`...`;
-    return data;
+'use server'
+
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+export async function signOut() {
+  // Delete the session cookie
+  
+  const cookieStore = await cookies()
+  console.log('cookie before delete',cookieStore)
+  cookieStore.delete('session')
+  console.log('cookie after delete',cookieStore)
+
+  // Redirect to the login page
+  redirect('/login')
 }
