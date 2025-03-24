@@ -5,14 +5,14 @@ import { redirect } from 'next/navigation'
 
 export async function signOut() {
   // Get the cookie store
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   // Delete the NextAuth session cookie. Adjust the cookie name if needed.
   cookieStore.delete('next-auth.session-token');
   
   // Optionally, delete additional related cookies like the CSRF token if necessary:
-  cookieStore.delete('next-auth.csrf-token');
+//   cookieStore.delete('next-auth.csrf-token');
   
   // Redirect to the login page
-  redirect('/login')
+  redirect('/')
 }

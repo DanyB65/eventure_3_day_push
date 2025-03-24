@@ -2,7 +2,8 @@
 import React from 'react';
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { signOut } from "../action";
+// import { signOut } from "../action";
+import { signOut } from 'next-auth/react';
 
 import styles from '../page.module.css'
 
@@ -10,8 +11,9 @@ export default function Home() {
   const { data: session } = useSession();
 
   const handleSignOut = async () => {
-    await signOut();
-    window.location.reload();
+    // await signOut();
+    // window.location.reload();
+    await signOut({ callbackUrl: '/' });
   };
 
   return (

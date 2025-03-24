@@ -1,18 +1,19 @@
 'use client';
+// export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useRouter,useSearchParams } from 'next/navigation';
+import { useRouter,router } from 'next/navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
+//   const searchParams = useSearchParams();
   // Get the callbackUrl from the query params, default to '/'
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
+//   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +23,6 @@ export default function Login() {
       email,
       password,
       redirect: false,
-      callbackUrl,
     });
 
     if (result?.error) {
@@ -30,7 +30,7 @@ export default function Login() {
     } else {
         console.log('result',result)
       // Redirect to the dynamic callbackUrl (or fallback to '/')
-      router.push(result.url || callbackUrl);
+      router.push('/');
     }
   };
 

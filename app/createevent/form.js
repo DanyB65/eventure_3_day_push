@@ -13,26 +13,7 @@ export default function EventForm() {
   const [startColor, setStartColor] = useState("#ff7e5f");
   const [endColor, setEndColor] = useState("#feb47b");
   const { data: session, status } = useSession(); // Get session data
-//   const router = useRouter();
-
-//   // If the session is still loading, you can show a loading state
-//   if (status === "loading") {
-//     return <p>Loading...</p>;
-//   }
-
-//   // If there's no session (user is not logged in), redirect to login page
-//   if (!session) {
-//     // router.push("/login");
-//     redirect("/login");
-//     return null;
-//   }
-
-  //   const handleSignOut = async () => {
-  //     await signOut();
-  //     window.location.reload(); // Reload to update session
-  //   };
-
-  // Handle form submission
+  const email = session?.user.email;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,7 +23,7 @@ export default function EventForm() {
       eventPrice,
       startColor,
       endColor,
-      email: session.user.email,
+      email: email
     };
 
     CreateEvent(eventData);
