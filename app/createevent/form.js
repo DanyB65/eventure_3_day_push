@@ -1,19 +1,20 @@
 'use client';
 import { useState } from 'react';
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { CreateEvent } from './action';
+import { redirect } from 'next/dist/server/api-utils';
 
 export default function EventForm() {
+    // Declare all hooks at the top of the component
+    const [eventName, setEventName] = useState("");
+    const [eventDescription, setEventDescription] = useState("");
+    const [eventPrice, setEventPrice] = useState("");
+    const [startColor, setStartColor] = useState("#ff7e5f");
+    const [endColor, setEndColor] = useState("#feb47b");
   const { data: session, status } = useSession(); // Get session data
   const router = useRouter();
 
-  // Declare all hooks at the top of the component
-  const [eventName, setEventName] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const [eventPrice, setEventPrice] = useState("");
-  const [startColor, setStartColor] = useState("#ff7e5f");
-  const [endColor, setEndColor] = useState("#feb47b");
 
   // If the session is still loading, you can show a loading state
   if (status === "loading") {
@@ -22,14 +23,15 @@ export default function EventForm() {
 
   // If there's no session (user is not logged in), redirect to login page
   if (!session) {
-    router.push("/login");
+    // router.push("/login");
+    redirect("/login");
     return null;
   }
 
-  const handleSignOut = async () => {
-    await signOut();
-    window.location.reload(); // Reload to update session
-  };
+//   const handleSignOut = async () => {
+//     await signOut();
+//     window.location.reload(); // Reload to update session
+//   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -45,7 +47,7 @@ export default function EventForm() {
     };
 
     CreateEvent(eventData);
-    console.log("Sending the following event data to the backend:", eventData);
+    // console.log("Sending the following event data to the backend:", eventData);
 
     // Reset form after submission
     setEventName("");
