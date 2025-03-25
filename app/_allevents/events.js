@@ -59,8 +59,11 @@
 // }
 // AllEvents.server.js
 import { neon } from "@neondatabase/serverless";
+import { getServerSession } from "next-auth";
 
 export default async function AllEvents() {
+    const user = await getServerSession();
+    console.log(user);
   const sql = neon(process.env.DATABASE_URL);
   const events = await sql`
     SELECT * FROM events

@@ -1,7 +1,11 @@
-export default function MyEvents(){
+import Home from "./header";
+import MyEvents from "./events";
+export default function UserEvents(){
     return (
-        <div>
-            <h1>This is the MyEvents page</h1>
-        </div>
+
+<>
+<Home/>
+<MyEvents/>
+</>
     )
 }

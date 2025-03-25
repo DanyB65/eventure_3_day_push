@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { CreateEvent } from "./action";
 
 export default function EventForm() {
-    const { data: session, status } = useSession(); // Get session data
+  const { data: session, status } = useSession(); // Get session data
   // Declare all hooks at the top of the component
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");

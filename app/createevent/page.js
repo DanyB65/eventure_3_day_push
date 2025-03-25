@@ -173,33 +173,23 @@ export default function CreateEvent() {
 
   return (
     <div>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Eventure</h1>
-        <nav className={styles.nav}>
-          <div className={styles.navLinks}>
-            <Link href="/" className={styles.homeLink}>
-              Events
-            </Link>
-            <Link href="/createevent" className={styles.createEventLink}>
-              Create Event
-            </Link>
-            {session ? (
-              <button className={styles.signOutButton} onClick={handleSignOut}>
-                Sign Out
-              </button>
-            ) : (
-              <>
-                <Link href="/login" className={styles.loginLink}>
-                  Login
-                </Link>
-                <Link href="/signup" className={styles.signupLink}>
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
-      </header>
+    <header className={styles.header}>
+      <h1 className={styles.title}>
+        <Link href="/">Eventure</Link>
+      </h1>
+      <nav className={styles.nav}>
+        <div className={styles.navLinks}>
+          <Link href="/createevent" className={styles.createEventLink}>
+            Create Event
+          </Link>
+          
+            <button className={styles.signOutButton} onClick={handleSignOut}>
+              Sign Out
+            </button>
+
+        </div>
+      </nav>
+    </header>
       <h4
         style={{
           color: "#fff",
