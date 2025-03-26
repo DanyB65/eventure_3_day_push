@@ -1,94 +1,180 @@
-'use client';
-// export const dynamic = 'force-dynamic';
-
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { signIn } from 'next-auth/react';
-import { useRouter,router } from 'next/navigation';
+"use client";
+import { useRouter } from "next/navigation";
+import { signInWithEmail } from "./action";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const router = useRouter();
-//   const searchParams = useSearchParams();
-  // Get the callbackUrl from the query params, default to '/'
-//   const callbackUrl = searchParams.get('callbackUrl') || '/';
+  const [user, setUser] = useState({ email: "", password: "" });
+  const [mounted, setMounted] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Ensure the component is mounted before using the router.
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    // Call NextAuth.js to handle the login, passing in the callbackUrl
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
     });
-
-    if (result?.error) {
-      setError('Invalid email or password');
-    } else {
-        console.log('result',result)
-      // Redirect to the dynamic callbackUrl (or fallback to '/')
-      router.push('/');
-    }
   };
 
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    await signInWithEmail(user);
+    console.log("Signing in user with data:", user);
+    router.push("/"); // This will work once the router is mounted.
+  };
+
+  // Until the component is mounted, don't render anything.
+  if (!mounted) return null;
+
   return (
-    <div style={{ maxWidth: 400, margin: '0 auto', padding: '20px' }}>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="email" style={{ display: 'block' }}>
-            Email:
+    <div style={styles.container}>
+    {/* Left Side (Info / Marketing) */}
+    <div style={styles.leftSide}>
+      <h1 style={styles.eventureTitle}>
+        <Link href="/">Eventure</Link>
+      </h1>
+      <h2 style={styles.subtitle}>Tailored for Event Planners & Vendors</h2>
+      <p style={{ marginBottom: "1rem" }}>
+        Whether you&apos;re booking your dream event or delivering top-notch services, Eventure connects you with the opportunities you need.
+      </p>
+      <ul style={styles.list}>
+        <li>Seamless event booking and management for planners</li>
+        <li>Effortless scheduling and notifications for vendors</li>
+        <li>Transparent vendor comparisons & data-driven insights</li>
+        <li>Integrated communication and collaboration tools</li>
+      </ul>
+    </div>
+
+      {/* Right Side (Login Form) */}
+      <div style={styles.rightSide}>
+        <h1 style={styles.title}>Login to your account</h1>
+        <form onSubmit={handleSignIn} style={styles.form}>
+          {/* Email */}
+          <label style={styles.label}>
+            Email
+            <input
+              style={styles.input}
+              type="email"
+              name="email"
+              value={user.email}
+              onChange={handleChange}
+              required
+            />
           </label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
-          />
-        </div>
 
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="password" style={{ display: 'block' }}>
-            Password:
+          {/* Password */}
+          <label style={styles.label}>
+            Password
+            <input
+              style={styles.input}
+              type="password"
+              name="password"
+              value={user.password}
+              onChange={handleChange}
+              required
+            />
           </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
-          />
-        </div>
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button type="submit" style={{ padding: '8px 16px' }}>
-            Login
+          <button type="submit" style={styles.button}>
+            LOGIN
           </button>
-          <Link href="/signup" legacyBehavior>
-            <a
-              style={{
-                display: 'inline-block',
-                padding: '8px 16px',
-                backgroundColor: '#0070f3',
-                color: '#fff',
-                borderRadius: '4px',
-                textDecoration: 'none',
-                textAlign: 'center',
-              }}
-            >
-              Sign Up Here!
-            </a>
+          <Link href="/signup" style={styles.signupButton}>
+          Sign Up
           </Link>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
+const styles = {
+    container: {
+      display: "flex",
+      minHeight: "100vh",
+      fontFamily: "sans-serif",
+    },
+    leftSide: {
+      flex: 1,
+      backgroundColor: "#fff", // white background for info
+      color: "#333",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      padding: "2rem",
+    },
+    rightSide: {
+      flex: 1,
+      backgroundColor: "#EB3B43", // colored background for form
+      color: "#fff",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      padding: "2rem",
+    },
+    eventureTitle: {
+      fontSize: "2rem",
+      fontWeight: "bold",
+      textAlign: "center",
+      marginBottom: "1rem",
+      color: "#EB3B43",
+    },
+    title: {
+      fontSize: "1.5rem",
+      marginBottom: "1rem",
+      fontWeight: "bold",
+    },
+    subtitle: {
+      fontSize: "1.5rem",
+      marginBottom: "1rem",
+      fontWeight: "bold",
+      color: "#333",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    label: {
+      marginBottom: "0.5rem",
+      display: "flex",
+      flexDirection: "column",
+      fontWeight: "500",
+    },
+    input: {
+      padding: "0.5rem",
+      borderRadius: "4px",
+      border: "1px solid #ccc",
+      marginTop: "0.25rem",
+    },
+    button: {
+      marginTop: "1rem",
+      padding: "0.75rem 1rem",
+      border: "none",
+      borderRadius: "4px",
+      backgroundColor: "#fff",
+      color: "#EB3B43",
+      fontWeight: "bold",
+      cursor: "pointer",
+    },
+    signupButton: {
+      marginTop: "1rem",
+      padding: "0.75rem 1rem",
+      border: "none",
+      borderRadius: "4px",
+      backgroundColor: "#fff",
+      color: "#EB3B43",
+      fontWeight: "bold",
+      cursor: "pointer",
+      textDecoration: "none",
+      textAlign: "center",
+      display: "block",
+    },
+    list: {
+      listStyleType: "disc",
+      paddingLeft: "1.5rem",
+      lineHeight: "1.75",
+    },
+  };

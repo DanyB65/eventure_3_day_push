@@ -1,21 +1,44 @@
+
 // 'use client';
 // import React from 'react';
-// import { useSession } from "next-auth/react";
 // import Link from "next/link";
-// // import { signOut } from "../action";
-// import { signOut } from 'next-auth/react';
-
-// import styles from '../page.module.css'
+// import { supabase } from '../ultis/supabase/client';
+// import { useRouter } from 'next/router';
+// import { useEffect } from 'react';
+// import styles from '../page.module.css';
 
 // export default function Home() {
-//   const { data: session } = useSession();
+//     const router = useRouter();
 
-//   const handleSignOut = async () => {
-//     // await signOut();
-//     // window.location.reload();
-//     await signOut({ callbackUrl: '/' });
-//   };
-
+//     const handleSession = async () => {
+//       try {
+//         const { data, error } = await supabase.auth.getSession();
+//         if (error || !data.session) {
+//           // console.error("No active session found:", error);
+//           router.push("/login");
+//         } else {
+//           // console.log("Session data:", data);
+//         }
+//       } catch (err) {
+//         // console.error("Unexpected error fetching session:", err);
+//         router.push("/login");
+//       }
+//     };
+    
+  
+//     useEffect(() => {
+//       handleSession();
+//     }, []);
+  
+//     const handleSignOut = async () => {
+//       const { error } = await supabase.auth.signOut();
+//       if (!error) {
+//         // Redirect after sign-out
+//         router.push("/");
+//       } else {
+//         // console.error("Error signing out:", error);
+//       }
+//     };
 //   return (
 //     <header className={styles.header}>
 //       <h1 className={styles.title}>
@@ -23,13 +46,15 @@
 //       </h1>
 //       <nav className={styles.nav}>
 //         <div className={styles.navLinks}>
-//           <Link href="/createevent" className={styles.createEventLink}>
-//             Create Event
-//           </Link>
 //           {session ? (
-//             <button className={styles.signOutButton} onClick={handleSignOut}>
-//               Sign Out
-//             </button>
+//             <>
+//               <Link href="/createevent" className={styles.createEventLink}>
+//                 Create Event
+//               </Link>
+//               <button className={styles.signOutButton} onClick={handleSignOut}>
+//                 Sign Out
+//               </button>
+//             </>
 //           ) : (
 //             <>
 //               <Link href="/login" className={styles.loginLink}>
@@ -44,20 +69,46 @@
 //       </nav>
 //     </header>
 //   );
-  
 // }
-'use client';
-import React from 'react';
-import { useSession } from "next-auth/react";
+
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { signOut } from 'next-auth/react';
-import styles from '../page.module.css';
+import { supabase } from "../ultis/supabase/client";
+import { useRouter } from "next/navigation";
+import styles from "../page.module.css";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const router = useRouter();
+  const [session, setSession] = useState(null);
+
+  const handleSession = async () => {
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        // console.error("Session error:", error);
+        setSession(null);
+      } else {
+        setSession(data.session); // data.session will be null if not logged in
+      }
+    } catch (err) {
+    //   console.error("Unexpected error fetching session:", err);
+      setSession(null);
+    }
+  };
+
+  useEffect(() => {
+    handleSession();
+  }, []);
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      setSession(null);
+      router.push("/");
+    } else {
+    //   console.error("Error signing out:", error);
+    }
   };
 
   return (
