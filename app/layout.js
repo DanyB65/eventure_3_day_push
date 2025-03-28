@@ -37,19 +37,85 @@
 // //     </SessionProvider>
 // //   );
 // // }
+// 'use client';
+
+// import { SessionProvider } from "next-auth/react"; // Import SessionProvider
+// import { ReactNode } from "react"; // Import ReactNode for typing
+// import "./globals.css"; // Your global styles
+
+// export default function RootLayout({ children }) {
+//   return (
+//     <SessionProvider>
+//       {/* Wrap your application with SessionProvider */}
+//       <html lang="en">
+//         <body>{children}</body>
+//       </html>
+//     </SessionProvider>
+//   );
+// }
+
+
+// app/layout.jsx or app/layout.tsx
+// 'use client'
+
+// import { supabase } from './ultis/supabase/client'
+// import { SessionContextProvider } from '@supabase/auth-helpers-react'
+// import { useState } from 'react'
+// import "./globals.css"; // Your global styles
+
+// export default function RootLayout({ children }) {
+//   const [supabase] = useState(() => createPagesBrowserClient())
+
+//   return (
+//     <html lang="en">
+//       <body>
+//         <SessionContextProvider supabaseClient={supabase}>
+//           {children}
+//         </SessionContextProvider>
+//       </body>
+//     </html>
+//   )
+// }
+
+
+// 'use client';
+
+// import { createClient } from './ultis/supabase/client';
+// import { SessionContextProvider } from '@supabase/auth-helpers-react';
+// // import { SessionContextProvider } from '@supabase/ssr';
+// // import { useState } from 'react';
+// import "./globals.css";
+
+// export default function RootLayout({ children }) {
+//   // Use your own supabase client initialized in client.js
+//   // const [client] = useState(() => supabase);
+//   const supabase = createClient();
+
+//   return (
+//     <html lang="en">
+//       <body>
+//         <SessionContextProvider supabaseClient={client}>
+//           {children}
+//         </SessionContextProvider>
+//       </body>
+//     </html>
+//   );
+// }
+
+// In your RootLayout.jsx
 'use client';
 
-import { SessionProvider } from "next-auth/react"; // Import SessionProvider
-import { ReactNode } from "react"; // Import ReactNode for typing
-import "./globals.css"; // Your global styles
+import { SessionProvider } from '../context/SessionProvider';
+import "./globals.css";
 
 export default function RootLayout({ children }) {
   return (
-    <SessionProvider>
-      {/* Wrap your application with SessionProvider */}
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </SessionProvider>
+    <html lang="en">
+      <body>
+        <SessionProvider>
+          {children}
+        </SessionProvider>
+      </body>
+    </html>
   );
 }

@@ -1,9 +1,8 @@
-"use server";
-import { createClient } from "../ultis/supabase/server";
+import { createClient } from "../../ultis/supabase/client";
 
 export async function CreateEvent(formData) {
   // Create the server-side Supabase client with cookie context
-  const supabase = await createClient();
+  const supabase =  createClient();
   //   Retrieve the session to get the authenticated user's id
 
   const eventName = formData.eventName;
@@ -12,6 +11,7 @@ export async function CreateEvent(formData) {
   const startColor = formData.startColor;
   const endColor = formData.endColor;
   const userId = formData.userId;
+//   console.log(formData.preview_url)
 //   console.log("server side user id ", userId);
 
   //   Include the user_id in your insert
@@ -35,5 +35,5 @@ export async function CreateEvent(formData) {
 //   console.log("After query");
 //   console.log("results:", data);
 
-  return data;
+  return { data, error };
 }
