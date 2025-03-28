@@ -4,7 +4,7 @@ const nextConfig = {
         domains: ['qctxtshwklpnvydtlsqg.supabase.co'],
       },
       experimental: {
-        turbopack: true,
+        turbopack: false,
       },
 };
 
