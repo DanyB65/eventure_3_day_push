@@ -12,8 +12,6 @@
 //     return <p>Please log in to view your bookings.</p>;
 //   }
 
-
-
 //   if (error) {
 //     console.error(error);
 //     return <p>Error loading your bookings: {error.message}</p>;
@@ -105,62 +103,63 @@ export default async function MyBookingsPage() {
 
   return (
     <>
-    <Header/>
-    <div
-      style={{
-        padding: "2rem",
-        fontFamily: "system-ui, sans-serif",
-        backgroundColor: "#FAFAFA",
-        minHeight: "100vh",
-      }}
-    >
-      <h1 style={{ fontSize: "2rem", marginBottom: "1.5rem", color: "#000" }}>
-        My Bookings
-      </h1>
+      <Header />
+      <div
+        style={{
+          padding: "2rem",
+          fontFamily: "system-ui, sans-serif",
+          backgroundColor: "#FAFAFA",
+          minHeight: "100vh",
+        }}
+      >
+        <h1 style={{ fontSize: "2rem", marginBottom: "1.5rem", color: "#000" }}>
+          My Bookings
+        </h1>
 
-      {bookings && bookings.length > 0 ? (
-        bookings.map((booking) => (
-          <div
-            key={booking.id}
-            style={{
-              backgroundColor: "#fff",
-              border: "1px solid #ddd",
-              padding: "1.5rem",
-              marginBottom: "1.5rem",
-              borderRadius: "12px",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
-            }}
-          >
-            <h2
+        {bookings && bookings.length > 0 ? (
+          bookings.map((booking) => (
+            <div
+              key={booking.id}
               style={{
-                marginBottom: "0.5rem",
-                color: "#000",
-                fontSize: "1.3rem",
+                backgroundColor: "#fff",
+                border: "1px solid #ddd",
+                padding: "1.5rem",
+                marginBottom: "1.5rem",
+                borderRadius: "12px",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
               }}
             >
-              {booking.event?.event_name || "Unknown Event"}
-            </h2>
-            <p style={{ color: "#444", marginBottom: "0.5rem" }}>
-              {booking.event?.event_description || "No description available."}
-            </p>
-            <p style={{ marginBottom: "0.3rem", color: "#000" }}>
-              <strong>Price:</strong> ${booking.event?.event_price || "N/A"}
-            </p>
-            <p style={{ marginBottom: "0.3rem", color: "#000" }}>
-              <strong>Booked on:</strong>{" "}
-              {new Date(booking.created_at).toLocaleString()}
-            </p>
-            <p style={{ marginBottom: "0", color: "#000" }}>
-              <strong>Amount Paid:</strong> ${booking.amount || "N/A"}
-            </p>
-          </div>
-        ))
-      ) : (
-        <p style={{ fontSize: "1.1rem", color: "#555" }}>
-          You haven't made any bookings yet.
-        </p>
-      )}
-    </div>
+              <h2
+                style={{
+                  marginBottom: "0.5rem",
+                  color: "#000",
+                  fontSize: "1.3rem",
+                }}
+              >
+                {booking.event?.event_name || "Unknown Event"}
+              </h2>
+              <p style={{ color: "#444", marginBottom: "0.5rem" }}>
+                {booking.event?.event_description ||
+                  "No description available."}
+              </p>
+              <p style={{ marginBottom: "0.3rem", color: "#000" }}>
+                <strong>Price:</strong> ${booking.event?.event_price || "N/A"}
+              </p>
+              <p style={{ marginBottom: "0.3rem", color: "#000" }}>
+                <strong>Booked on:</strong>{" "}
+                {new Date(booking.created_at).toLocaleString()}
+              </p>
+              <p style={{ marginBottom: "0", color: "#000" }}>
+                <strong>Amount Paid:</strong> ${booking.amount || "N/A"}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p style={{ fontSize: "1.1rem", color: "#555" }}>
+            {"You haven't made any bookings yet."}{" "}
+          </p>
+        )}
+      </div>
     </>
   );
 }
