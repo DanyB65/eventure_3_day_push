@@ -1,10 +1,12 @@
 // stripe/connect.js
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
-import { createClient } from "../../../../ultis/supabase/client";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// import Stripe from "stripe";
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import { stripe } from "../../../../lib/stripe";
 
 export async function POST(request) {
+    // console.log("POST request received");
+    // fake stripe account id acct_1R7SiPQBg0z5BCpb
   try {
     // Parse any request body if needed (for MVP, you may not pass any info)
     const body = await request.json().catch(() => ({}));
@@ -16,7 +18,10 @@ export async function POST(request) {
     const account = await stripe.accounts.create({
       type: "express",
       country: "US",
-      email: body.email, // Optionally pass vendor's email if provided.
+      email: body.email,
+      capabilities: {
+        card_payments: { requested: true },
+        transfers: { requested: true }},
     });
     // console.log("Created connected account ID:", account.id);
     // Create an account link to redirect the vendor to Stripe's onboarding
@@ -28,9 +33,11 @@ export async function POST(request) {
       return_url: process.env.STRIPE_RETURN_URL || "http://localhost:3000/",
       type: "account_onboarding",
     });
+    console.log("Created account link:", accountLink.url,'account id', account.id);
     return NextResponse.json({ url: accountLink.url, accountId: account.id });
   } catch (error) {
     console.error("Error creating Stripe Connect account link:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

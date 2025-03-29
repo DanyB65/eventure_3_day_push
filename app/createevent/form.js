@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -77,7 +76,7 @@ export default function EventForm() {
     if (file) {
       // UploadPicture should accept file, event id, and user id to generate a proper file path
       const uploadResult = await UploadPicture(file, event_id, userId);
-// console.log("uploadResult", uploadResult);
+      // console.log("uploadResult", uploadResult);
       if (uploadResult.error) {
         console.error("Image upload failed:", uploadResult.error);
         // Optionally, update the event record or notify the user
@@ -117,7 +116,6 @@ export default function EventForm() {
       event.preventDefault();
     }
   }
-
   return (
     <div
       style={{
@@ -125,96 +123,203 @@ export default function EventForm() {
         gap: "40px",
         justifyContent: "center",
         alignItems: "flex-start",
+        padding: "40px",
+        color: "#000",
+        fontFamily: "system-ui, sans-serif",
       }}
     >
       {/* Form Section */}
-      <div style={{ flex: 1, maxWidth: "500px" }}>
-        <h2>Create an Event</h2>
+      <div
+        style={{
+          flex: 1,
+          maxWidth: "500px",
+          background: "#fff",
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+          color: "#000",
+        }}
+      >
+        <h2 style={{ marginBottom: "20px", color: "#000" }}>Create an Event</h2>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>Event Name</label>
+          <div style={{ marginBottom: "20px" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "6px",
+                fontWeight: "600",
+                color: "#000",
+              }}
+            >
+              Event Name
+            </label>
             <input
               type="text"
               value={eventName}
               onChange={(e) => setEventName(e.target.value)}
               required
               placeholder="Enter event name"
-              style={{ width: "100%", padding: "10px", marginBottom: "15px" }}
+              style={{
+                width: "100%",
+                padding: "12px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                backgroundColor: "#fff",
+                color: "#000",
+                outline: "none",
+              }}
+              onFocus={(e) => (e.target.style.border = "1px solid #999")}
+              onBlur={(e) => (e.target.style.border = "1px solid #ccc")}
               onKeyPress={(e) => limitKeypressOnTitle(e, eventName)}
             />
           </div>
 
-          <div>
-            <label>Event Description</label>
+          <div style={{ marginBottom: "20px" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "6px",
+                fontWeight: "600",
+                color: "#000",
+              }}
+            >
+              Event Description
+            </label>
             <textarea
               value={eventDescription}
               onChange={(e) => setEventDescription(e.target.value)}
               required
               placeholder="Enter event description"
-              style={{ width: "100%", padding: "10px", marginBottom: "15px" }}
+              style={{
+                width: "100%",
+                padding: "12px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                resize: "vertical",
+                minHeight: "100px",
+                backgroundColor: "#fff",
+                color: "#000",
+                outline: "none",
+              }}
+              onFocus={(e) => (e.target.style.border = "1px solid #999")}
+              onBlur={(e) => (e.target.style.border = "1px solid #ccc")}
               onKeyPress={(e) =>
                 limitKeypressOnDescription(e, eventDescription)
               }
             />
           </div>
 
-          <div>
-            <label>Event Price</label>
+          <div style={{ marginBottom: "20px" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "6px",
+                fontWeight: "600",
+                color: "#000",
+              }}
+            >
+              Event Price
+            </label>
             <input
               type="number"
               value={eventPrice}
               onChange={(e) => setEventPrice(e.target.value)}
               required
               placeholder="Enter event price"
-              style={{ width: "100%", padding: "10px", marginBottom: "15px" }}
+              style={{
+                width: "100%",
+                padding: "12px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                backgroundColor: "#fff",
+                color: "#000",
+                outline: "none",
+              }}
+              onFocus={(e) => (e.target.style.border = "1px solid #999")}
+              onBlur={(e) => (e.target.style.border = "1px solid #ccc")}
               onKeyPress={(e) => limitKeypressOnPrice(e, eventPrice)}
             />
           </div>
 
-          {/* File input for picture */}
-          <div>
-            <label>Upload Event Picture</label>
+          <div style={{ marginBottom: "20px" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "6px",
+                fontWeight: "600",
+                color: "#000",
+              }}
+            >
+              Upload Event Picture
+            </label>
             <input
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              style={{ marginBottom: "15px" }}
+              style={{
+                fontSize: "0.95rem",
+                color: "#000",
+              }}
             />
           </div>
 
-          <div>
-            <button
-              type="submit"
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#EB3B43",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-              }}
-            >
-              Create Event
-            </button>
-          </div>
+          <button
+            type="submit"
+            style={{
+              padding: "12px 24px",
+              backgroundColor: "#EB3B43",
+              color: "white",
+              fontSize: "1rem",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              transition: "background 0.2s ease-in-out",
+            }}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c93038")
+            }
+            onMouseOut={(e) =>
+              (e.currentTarget.style.backgroundColor = "#EB3B43")
+            }
+          >
+            Create Event
+          </button>
         </form>
 
-        {/* Color Pickers for Gradient */}
-        <div style={{ marginTop: "20px" }}>
-          <label>Pick Gradient Start Color:</label>
+        {/* Color Pickers */}
+        <div style={{ marginTop: "30px" }}>
+          <label
+            style={{
+              fontWeight: "600",
+              marginRight: "10px",
+              color: "#000",
+            }}
+          >
+            Gradient Start Color:
+          </label>
           <input
             type="color"
             value={startColor}
             onChange={(e) => setStartColor(e.target.value)}
-            style={{ marginLeft: "10px" }}
           />
         </div>
         <div style={{ marginTop: "10px" }}>
-          <label>Pick Gradient End Color:</label>
+          <label
+            style={{
+              fontWeight: "600",
+              marginRight: "10px",
+              color: "#000",
+            }}
+          >
+            Gradient End Color:
+          </label>
           <input
             type="color"
             value={endColor}
             onChange={(e) => setEndColor(e.target.value)}
-            style={{ marginLeft: "10px" }}
           />
         </div>
       </div>
@@ -228,13 +333,15 @@ export default function EventForm() {
           alignItems: "center",
         }}
       >
-        <h3 style={{ color: "white", margin: "0", textAlign: "center" }}>
-          Event Preview (Actual size of published Event)
+        <h3
+          style={{ color: "#000", marginBottom: "10px", textAlign: "center" }}
+        >
+          Event Preview
         </h3>
         <div
           style={{
-            backgroundColor: "black",
-            border: "1px solid #ddd",
+            background: `linear-gradient(135deg, ${startColor}, ${endColor})`,
+            border: "1px solid #e0e0e0",
             padding: "25px",
             width: "250px",
             height: "320px",
@@ -242,18 +349,16 @@ export default function EventForm() {
             flexDirection: "column",
             borderRadius: "20px",
             alignItems: "center",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            background: `linear-gradient(135deg, ${startColor}, ${endColor})`,
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
           }}
         >
-          {/* Display the uploaded image preview if available */}
           {previewUrl ? (
             <Image
               src={previewUrl}
-              alt="Event Preview"
+              alt="Event image"
+              width={240}
+              height={180}
               style={{
-                width: "240px",
-                height: "180px",
                 objectFit: "cover",
                 borderRadius: "10px",
               }}
@@ -263,7 +368,7 @@ export default function EventForm() {
               style={{
                 width: "100%",
                 height: "60%",
-                backgroundColor: "#ccc",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "10px",
                 display: "flex",
                 alignItems: "center",
@@ -275,21 +380,17 @@ export default function EventForm() {
             </div>
           )}
           <div
-            style={{
-              width: "100%",
-              paddingTop: "10px",
-              textAlign: "center",
-            }}
+            style={{ width: "100%", paddingTop: "10px", textAlign: "center" }}
           >
-            <h4 style={{ margin: "0", fontSize: "1.2rem", color: "black" }}>
+            <h4 style={{ margin: "0", fontSize: "1.2rem", color: "#000" }}>
               {eventName || "Event Name"}
             </h4>
             <p
               style={{
-                margin: "0",
+                margin: "5px 0",
                 fontSize: "0.9rem",
                 color: "#333",
-                overflowWrap: "break-word",
+                wordWrap: "break-word",
               }}
             >
               {eventDescription
@@ -301,7 +402,7 @@ export default function EventForm() {
                 margin: "0",
                 fontWeight: "bold",
                 fontSize: "1.1rem",
-                color: "#EB3B43",
+                color: "#000",
               }}
             >
               ${eventPrice || "0"}

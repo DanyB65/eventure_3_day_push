@@ -3,9 +3,9 @@ const nextConfig = {
     images: {
         domains: ['qctxtshwklpnvydtlsqg.supabase.co'],
       },
-      experimental: {
-        turbopack: false,
-      },
+    //   experimental: {
+    //     turbopack: false,
+    //   },
 };
 
 export default nextConfig;

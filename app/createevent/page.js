@@ -41,10 +41,6 @@ export default function CreateEvent() {
     checkSessionAndStripe();
   }, [router, supabase]);
 
-  // const handleSignOut = async () => {
-  //   const { error } = await supabase.auth.signOut();
-  //   if (!error) router.push("/");
-  // };
 
   if (loading) return <p>Loading...</p>;
 
@@ -52,24 +48,13 @@ export default function CreateEvent() {
     <div>
       <Header />
 
-      <h4 style={{
-        color: "#fff", backgroundColor: "#000", padding: "20px", borderRadius: "10px",
-        maxWidth: "100%", margin: "0 auto",
-      }}>
-        {/* [Your content here] */}
-        <p style={{ fontSize: "1.2rem" }}>
-        </p>
-        {/* ... */}
-        <p style={{ fontSize: "1rem", fontStyle: "italic", textAlign: "right" }}>
-        </p>
-      </h4>
 
       {stripeId ? (
         <EventForm />
       ) : (
         <div style={{ padding: "30px", textAlign: "center" }}>
           <p>You need to connect your Stripe account before creating events.</p>
-          <Link href="/api/stripe/connect">
+          <Link href="/stripe">
             <button
               style={{
                 padding: "10px 20px",

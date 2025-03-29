@@ -12,7 +12,7 @@ export const config = {
       '/createevent/:path*',
       '/events/:path*',
       '/myevents/:path*',
-      '/api/:path*',
+    //   '/api/:path*',
       // Add any additional protected routes here if needed.
     ],
   };

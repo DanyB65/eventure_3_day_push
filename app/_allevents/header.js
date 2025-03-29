@@ -125,6 +125,9 @@ export default function Header() {
               <Link href="/myevents" className={styles.createEventLink}>
                 My Events
               </Link>
+              <Link href="/mybookings" className={styles.createEventLink}>
+                My Bookings
+              </Link>
               <button className={styles.signOutButton} onClick={handleSignOut}>
                 Sign Out
               </button>

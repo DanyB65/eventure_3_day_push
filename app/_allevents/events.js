@@ -105,6 +105,7 @@ export default async function AllEvents() {
                     marginTop: "10px",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    color: "black",
                     display: "-webkit-box",
                     WebkitLineClamp: 1,
                     WebkitBoxOrient: "vertical",
