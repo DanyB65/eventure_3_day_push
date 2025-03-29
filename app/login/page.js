@@ -1,6 +1,91 @@
+// import { signInWithEmail } from "./action";
+// import Link from "next/link";
+// export default function LoginPage() {
+//   return (
+//     <div style={styles.container}>
+//       {/* Left Side (Info / Marketing) */}
+//       <div style={styles.leftSide}>
+//         <h1 style={styles.eventureTitle}>
+//           <Link href="/">Eventure</Link>
+//         </h1>
+//         <h2 style={styles.subtitle}>Tailored for Event Planners & Vendors</h2>
+//         <p style={{ marginBottom: "1rem" }}>
+//           Whether you&apos;re booking your dream event or delivering top-notch
+//           services, Eventure connects you with the opportunities you need.
+//         </p>
+
+//         <ul style={styles.list}>
+//           <li>Seamless event booking and management for planners</li>
+//           <li>Effortless scheduling and notifications for vendors</li>
+//           <li>Transparent vendor comparisons & data-driven insights</li>
+//           <li>Integrated communication and collaboration tools</li>
+//         </ul>
+//       </div>
+
+//       {/* Right Side (Login Form) */}
+//       <div style={styles.rightSide}>
+//         <h1 style={styles.title}>Login to your account</h1>
+//         {/* The form posts to the signInWithEmail server action */}
+//         <form action={signInWithEmail} style={styles.form}>
+//           {/* Email */}
+//           <label style={styles.label}>
+//             Email
+//             <input style={styles.input} type="email" name="email" required />
+//           </label>
+
+//           {/* Password */}
+//           <label style={styles.label}>
+//             Password
+//             <input
+//               style={styles.input}
+//               type="password"
+//               name="password"
+//               required
+//             />
+//           </label>
+
+//           <button type="submit" style={styles.button}>
+//             LOGIN
+//           </button>
+//           <Link href="/signup" style={styles.signupButton}>
+//             Sign Up
+//           </Link>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+
+"use client";
+
 import { signInWithEmail } from "./action";
 import Link from "next/link";
+import { useState, useTransition } from "react";
+
 export default function LoginPage() {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isPending, startTransition] = useTransition();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setErrorMessage(''); // Clear any previous error
+
+    const formData = new FormData(event.target);
+
+    // Use startTransition if the server action might take a bit
+    startTransition(async () => {
+      const result = await signInWithEmail(formData);
+      // If there's an error returned from the server action, update the error message state
+      if (result && result.error) {
+        setErrorMessage(result.error);
+      }
+    });
+  }
+
   return (
     <div style={styles.container}>
       {/* Left Side (Info / Marketing) */}
@@ -10,10 +95,8 @@ export default function LoginPage() {
         </h1>
         <h2 style={styles.subtitle}>Tailored for Event Planners & Vendors</h2>
         <p style={{ marginBottom: "1rem" }}>
-          Whether you&apos;re booking your dream event or delivering top-notch
-          services, Eventure connects you with the opportunities you need.
+          Whether you're booking your dream event or delivering top-notch services, Eventure connects you with the opportunities you need.
         </p>
-
         <ul style={styles.list}>
           <li>Seamless event booking and management for planners</li>
           <li>Effortless scheduling and notifications for vendors</li>
@@ -25,8 +108,7 @@ export default function LoginPage() {
       {/* Right Side (Login Form) */}
       <div style={styles.rightSide}>
         <h1 style={styles.title}>Login to your account</h1>
-        {/* The form posts to the signInWithEmail server action */}
-        <form action={signInWithEmail} style={styles.form}>
+        <form onSubmit={handleSubmit} style={styles.form}>
           {/* Email */}
           <label style={styles.label}>
             Email
@@ -36,15 +118,17 @@ export default function LoginPage() {
           {/* Password */}
           <label style={styles.label}>
             Password
-            <input
-              style={styles.input}
-              type="password"
-              name="password"
-              required
-            />
+            <input style={styles.input} type="password" name="password" required />
           </label>
 
-          <button type="submit" style={styles.button}>
+          {/* Inline error message */}
+          {errorMessage && (
+            <p style={{ color: "white", marginTop: "0.5rem" }}>
+              {errorMessage}
+            </p>
+          )}
+
+          <button type="submit" style={styles.button} disabled={isPending}>
             LOGIN
           </button>
           <Link href="/signup" style={styles.signupButton}>
