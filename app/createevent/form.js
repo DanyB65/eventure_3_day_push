@@ -98,7 +98,7 @@ export default function EventForm() {
 
   // Helper functions for keypress limits
   function limitKeypressOnTitle(event, value) {
-    if (value && value.toString().length >= 30) {
+    if (value && value.toString().length >= 20) {
       event.preventDefault();
     }
   }
