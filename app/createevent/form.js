@@ -13,7 +13,7 @@ export default function EventForm() {
   const [eventDescription, setEventDescription] = useState("");
   const [eventPrice, setEventPrice] = useState("");
   const [startColor, setStartColor] = useState("#ff7e5f");
-  const [endColor, setEndColor] = useState("#feb47b");
+  const [endColor, setEndColor] = useState("#FFFFFF");
   const [userId, setUserId] = useState("");
 
   // State for image file and its preview URL
@@ -89,7 +89,7 @@ export default function EventForm() {
     setEventDescription("");
     setEventPrice("");
     setStartColor("#ff7e5f");
-    setEndColor("#feb47b");
+    // setEndColor("#feb47b");
     setFile(null);
     setPreviewUrl(null);
 
@@ -313,14 +313,8 @@ export default function EventForm() {
               marginRight: "10px",
               color: "#000",
             }}
-          >
-            Gradient End Color:
-          </label>
-          <input
-            type="color"
-            value={endColor}
-            onChange={(e) => setEndColor(e.target.value)}
           />
+
         </div>
       </div>
 
