@@ -95,7 +95,7 @@ export default function LoginPage() {
         </h1>
         <h2 style={styles.subtitle}>Tailored for Event Planners & Vendors</h2>
         <p style={{ marginBottom: "1rem" }}>
-          Whether you're booking your dream event or delivering top-notch services, Eventure connects you with the opportunities you need.
+          {"Whether you're booking your dream event or delivering top-notch services, Eventure connects you with the opportunities you need."}
         </p>
         <ul style={styles.list}>
           <li>Seamless event booking and management for planners</li>
